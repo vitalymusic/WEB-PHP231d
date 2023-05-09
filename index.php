@@ -6,6 +6,7 @@
     </div>
     <script>
         alert(\"testing php\")
+        alert(\"testing php\")
 
     </script>
 ";
