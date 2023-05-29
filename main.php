@@ -8,7 +8,9 @@
     }
     
 ?>
-<?php include("./head.php")?>
+<?php include("./uploads/head.php")?>
+<?php include("../../uploads2/head.php")?>
+
     <!-- main content -->
     
 <?php include("./header.php")?>    
