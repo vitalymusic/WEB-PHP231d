@@ -8,8 +8,7 @@
     }
     
 ?>
-<?php include("./uploads/head.php")?>
-<?php include("../../uploads2/head.php")?>
+<?php include("./head.php")?>
 
     <!-- main content -->
     
@@ -32,6 +31,7 @@
     Использование сессии - общие данные для разных страниц
     include и require
 
+    
  -->
     
 </body>
