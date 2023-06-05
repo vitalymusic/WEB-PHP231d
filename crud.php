@@ -13,7 +13,8 @@
         <form id="newUser" class="newuser">
         <input type="text" name="username" id="one">
         <input type="password" name="password" id="two">
-        <input type="submit" value="Add user">
+        <!-- <input type="submit" value="Add user"> -->
+        <button class="addUser">Add user</button>
         </form>
     </div>
     <hr>
@@ -27,6 +28,8 @@
             <td>Delete User</td>
         </tr>  
         </thead> 
+        <tbody>
+        </tbody>    
                
     </table>
 
@@ -37,6 +40,8 @@
         $(document).ready(()=>{
             getUsers();
             // Add user
+$('button.addUser').click((e)=>{
+                // e.preventDefault();  
                 $('form.newuser').submit((e)=>{
                     e.preventDefault();
                     data = $('form').serialize();
@@ -45,22 +50,23 @@
                          getUsers();
                     });
                 })
-                $('form.editForm').submit((e)=>{
+
+               $('form.editForm').submit((e)=>{
                     e.preventDefault();
-                    // data = $('form').serialize();
-                    // $.post('functions.php', data,(resp)=>{
-                    //      console.log(resp);
-                    //      getUsers();
-                    // });
-                })
-
-
+                    data = $('form').serialize();
+                    $.post('functions.php', data,(resp)=>{
+                         console.log(resp);
+                         getUsers();
+                    });
+            })
+        })
+    })
 
 
                 // list users
 
                 function getUsers(){
-                    $('table').append('<tbody></tbody>');
+                    // $('table').append('<tbody></tbody>');
                     $('table tbody').empty();
                     $.get('functions.php?get_users',(resp)=>{
                        
@@ -80,18 +86,35 @@
                     }).then(()=>{
                         $('.editButton').click((e)=>{
                         e.preventDefault();
-                       
                         id = $(e.target).data("id");
                         $.get('functions.php?edit_user=true&id='+id,(resp)=>{
                             data = JSON.parse(resp);
                             console.log(data);
                             $('input[name="username"]').val(data[0].username);
                             $('input[name="password"]').val(data[0].password);
-                            $('input[type="submit"]').val("редактировать").attr("data-id",id);
+                            $('button.addUser').text("редактировать").attr("data-id",id);
+                            $('form.newuser').prepend(`<input type=\"hidden\" name=\"id\" value=\"${$('button.addUser').data('id')}\">`);
+
+                            // $('form.newuser').append("teest");
                             $('form.newuser').addClass('editForm').removeClass('newuser');
-
-
                     })
+                })
+
+                // remove items JS
+
+                $('.deleteButton').click((e)=>{
+                    if(confirm("Действительно удалить?")){
+                        e.preventDefault();
+                        id = $(e.target).data("id");
+
+                        $.get('functions.php?delete_user=true&id='+id,(resp)=>{
+                            getUsers();
+                            console.log(resp);
+                        });
+                    }
+                  
+
+
                 })
                     });
 
@@ -100,10 +123,6 @@
 
                 // get data by id
 
-                
-
-               
-        })
     </script>
 </body>
 </html>

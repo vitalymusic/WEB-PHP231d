@@ -14,8 +14,7 @@
 
 
     // Add user
-    if($_POST){
-
+    if($_POST && !isset($_POST["id"])){
         $username = mysqli_escape_string($conn,$_POST["username"]);
         $pass = mysqli_escape_string($conn,$_POST["password"]);
 
@@ -26,9 +25,24 @@
             echo "Added";
         }
 
-
         // var_dump($_POST);
     }
+
+    if($_POST && isset($_POST["id"])){
+        $username = mysqli_escape_string($conn,$_POST["username"]);
+        $pass = mysqli_escape_string($conn,$_POST["password"]);
+        $id =  mysqli_escape_string($conn,$_POST["id"]);
+
+        $sql = "UPDATE `crud` SET `username` = '$username', `password` = '$pass' 
+        WHERE `id` = '$id'";
+
+        if(mysqli_query($conn,$sql)){
+            echo "Updated";
+        }else{
+            echo mysqli_error($conn);
+        }
+    }
+
 
     if(isset($_GET["get_users"])){
         $sql = "SELECT * FROM `crud`";
@@ -60,6 +74,20 @@
 
     }
 
+
+    if(isset($_GET["delete_user"])){
+
+
+        $userid = mysqli_escape_string($conn,$_GET["id"]);
+        $sql = "DELETE FROM `crud` WHERE `id`='$userid'";
+
+        if(mysqli_query($conn,$sql)){
+            echo "deleted";
+        }else{
+            echo mysqli_error($conn);
+        }
+
+    }
 
     //Update user
 
